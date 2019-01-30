@@ -1,5 +1,11 @@
 #credit @MuhsinIbnAlAzeez
 
+'''
+This is an animation showing a standing wave in a cavity 
+
+'''
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
