@@ -1,4 +1,4 @@
-#credit @MuhsinIbnAlAzeez
+#credit MuhsinIbnAlAzeez
 
 '''
 This is an animation showing a standing wave in a cavity 
