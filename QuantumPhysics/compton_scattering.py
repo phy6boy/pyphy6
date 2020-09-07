@@ -16,8 +16,6 @@ sys.path.insert(1,os.path.join(sys.path[0],'..'))
 from constants.constants import h,m_e,c
 
 import math
-
-
 #angle
 theta_in_degree = float(input('enter the angle of scattering(in degree) : '))
 

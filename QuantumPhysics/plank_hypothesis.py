@@ -38,10 +38,8 @@ import sys,os
 sys.path.insert(1,os.path.join(sys.path[0],'..'))
 from constants.constants import h,k_b,c
 
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 # T = 1595
 
 def plank_distr(nu,T):
@@ -58,7 +56,6 @@ def classic_distr(nu,T):
 	return (8*np.pi*nu**2*k_b*T)/c**3
 
 classic_energy = classic_distr(freq,1595)
-
 
 plt.plot(freq,energy,label="Plank's prediction")
 plt.ylim(-0.2e-17,4e-17)

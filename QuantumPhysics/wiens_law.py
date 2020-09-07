@@ -1,4 +1,3 @@
-# Credits @MuhsinIbnAlAzeez
 '''
 This program is used to find the values for wien's displacement law
 args:
@@ -6,13 +5,12 @@ args:
     Energy or E : find the temperature
 '''
 
-
 import sys
 
 constant = 2.898e-3  #m-K    wiens contant
 
 def compute(variable):
-    """compute wavelength if temperature is given and vice versa
+    """compute wavelength if temperature is given or vice versa
     """
     return constant/variable
 

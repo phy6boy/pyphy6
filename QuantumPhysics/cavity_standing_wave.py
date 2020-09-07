@@ -5,7 +5,6 @@ This is an animation showing a standing wave in a cavity
 
 '''
 
-
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -14,7 +13,6 @@ n = 2
 a = 10
 E0 = 5
 c = 3
-
 
 x = np.linspace(0,a,100)
 t = np.linspace(0,10,100)

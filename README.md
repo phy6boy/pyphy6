@@ -1,5 +1,3 @@
 # MyPhysics
-A collection of python programs
+A collection of simple python programs
 that can be used for physics education
-
-All contributions are welcomed!

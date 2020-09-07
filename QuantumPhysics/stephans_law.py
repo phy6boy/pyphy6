@@ -1,13 +1,9 @@
-# Credits @MuhsinIbnAlAzeez
 '''
 This program is used to find the values for stefans law
 args:
     temperature or T : find the Energy
     Energy or E : find the temperature
 '''
-
-
-
 
 import sys
 

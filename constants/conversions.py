@@ -1,6 +1,4 @@
-# credits @MuhsinIbnAlAzeez
 # this program contains list of some conversion factors
-
 
 def convert(from_value,to_value):
     return from_value/to_value
@@ -32,7 +30,6 @@ amu_to_kg = 1.661e-27
 m = 1
 kg = 1
 s = 1
-
 
 kg_to_amu = 1/amu_to_kg
 amu_to_MeV__c2 = 931.5
