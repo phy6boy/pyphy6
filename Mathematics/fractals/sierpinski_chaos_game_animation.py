@@ -14,6 +14,9 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 import os
 
+# Comment this if you want a white backround
+plt.style.use("dark_background")
+
 N = 15000
 x = np.zeros(N)
 y = np.zeros(N)
