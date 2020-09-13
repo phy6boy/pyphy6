@@ -143,7 +143,7 @@ for p in range(n):
 
 # animation
 fig = plt.figure(figsize=(8, 8))
-# plt.style.use("dark_background")
+plt.style.use("dark_background")
 ax = plt.axes(xlim=(-(np.max(l1)+np.max(l2) + 0.5), np.max(l1)+np.max(l2) + 0.5),\
               ylim=(-(np.max(l1)+np.max(l2) + 0.5), np.max(l1)+np.max(l2) + 0.5))
 ax.set_aspect('equal')
@@ -190,4 +190,4 @@ anim = animation.FuncAnimation(
 
 # plt.show()
 writer = animation.FFMpegWriter(fps=50, bitrate=-1)
-anim.save("./output/double_pendulum.mp4", writer=writer)
+anim.save("./output/double_pendulum_black.mp4", writer=writer)
