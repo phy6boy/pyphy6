@@ -8,12 +8,11 @@ c, A, b = rk4()
 
 def rkstep(tn, th1n, om1n, th2n, om2n, f1, f2, f3, f4, h):
     """
-    given tn, th1n and om1n, find next value of y1 and y2,
-    find th1n+1, om1n+1 at a time tn + h
-    use a method (rk4 by default)
+    given state with (th1n, om1n, th2n, om2n), then
+    find the next state at a time t + h
     parameters:
         f : function on the right hand of RK
-        f = f(t, y)
+        f = f(t, th1, om1, th2, om2)
         h : time step
         c , A, b : np.arrays corresponding to 
                    butcher tableu of pirticular method
@@ -90,20 +89,25 @@ def f4(t, th1, om1, th2, om2):
     return num / den
 
 # initial conditions
-g = 9.8
-t0 = 0.
-tf = 20.
-N = 20000
-h  = (tf-t0)/N
-T  = np.zeros(N, dtype=float)
+g = 9.8             # acc. due to gravity
+t0 = 0.             # initial time
+tf = 20.            # final time
+N = 20000           # number of descrete steps
+h  = (tf-t0)/N      # step size
+T  = np.zeros(N, dtype=float)   # Time array
 
 n = 5   # number of pendula
-mass1 = [1. for i in range(n)]; mass2 = [1. for i in range(n)];
-l1 = [1.2 for i in range(n)]; l2 = [1.2 for i in range(n)];
-theta10 = [5*np.pi/6 for i in range(n)] ; theta20 = [np.pi/2.6 + 0.00001*i for i in range(n)];
-omega10 = [0.0 for i in range(n)]; omega20 = [0.0 for i in range(n)];
+# definition of initial cnditions, lengths and masses of n pendula as array :
+mass1 = [1. for i in range(n)]
+mass2 = [2. for i in range(n)];
+l1 = [1.2 for i in range(n)]
+l2 = [1.2 for i in range(n)];
+theta10 = [5*np.pi/6 for i in range(n)]
+theta20 = [np.pi/2.6 + 0.00001*i for i in range(n)];
+omega10 = [0.0 for i in range(n)]
+omega20 = [0.0 for i in range(n)];
 
-# arrays
+# arrays that carry theta (TH) and omega (OM) of all pendula :
 TH1 = np.zeros((n, N), dtype=float)
 OM1 = np.zeros((n, N), dtype=float)
 TH2 = np.zeros((n, N), dtype=float)
@@ -151,12 +155,11 @@ ax.get_xaxis().set_visible(False)
 ax.get_yaxis().set_visible(False)
 
 ax.plot(0, 0, 'o', ms=5, c='k')
-skip = int(0.02 / h)   # 50 fps (0.02 frames per second)
 
 lines, m1s, m2s, traces = [], [], [], []
 for p in range(n):
     lines.append(ax.plot([], [], '-', lw=3, c=f'C{p}')[0])
-    m1s.append(ax.plot([], [], 'o', ms=4, c=f'C{p}')[0])
+    m1s.append(ax.plot([], [], 'o', ms=5, c=f'C{p}')[0])
     m2s.append(ax.plot([], [], 'o', ms=15, c=f'C{p}')[0])
     traces.append(ax.plot([], [], 'o', ms =1, c=f'C{p}')[0])
 
@@ -165,6 +168,7 @@ y1 = -np.array(l1).reshape((-1, 1))*np.cos(TH1)
 x2 = x1 + np.array(l2).reshape((-1, 1))*np.sin(TH2)
 y2 = y1 - np.array(l2).reshape((-1, 1))*np.cos(TH2)
 
+skip = int(0.02 / h)   # 50 fps (0.02 frames per second)
 def animate(i):
     i *= skip
     for p in range(n):
@@ -178,7 +182,7 @@ def animate(i):
         traces[p].set_data(x2[p, max(0, i-100*skip):i:skip],\
                            y2[p, max(0, i-100*skip):i:skip])
 
-    return lines+m1s+m2s+traces
+    return lines + m1s + m2s + traces
 
 anim = animation.FuncAnimation(
         fig=fig,
