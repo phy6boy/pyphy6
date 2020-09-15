@@ -21,3 +21,15 @@ def rk4():
 
     return (c, A, b)
 
+def euler():
+    """
+    The old fasioned euler method
+    Only for testing purposes.
+    """
+
+    c = np.array([0.])
+    A = np.array([[0.]])
+    b = np.array([1.])
+
+    return (c, A, b)
+

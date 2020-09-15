@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation
-from solvers.rk import rk4
+from solvers.rk import rk4, euler
 from tqdm import tqdm
 
 c, A, b = rk4()
@@ -139,14 +139,14 @@ for p in range(n):
         TH2[p, i] = th2n
         OM2[p, i] = om2n
 
-# plt.figure(1)
-# plt.plot(T, TH1, T, OM1)
+# plt.figure(0)
+# plt.plot(T, TH1[0], T, OM1[0])
 # plt.figure(2)
-# plt.plot(T, TH2, T, OM2)
+# plt.plot(T, TH2[0], T, OM2[0])
 # plt.show()
 
 # animation
-fig = plt.figure(figsize=(8, 8))
+fig = plt.figure(1, figsize=(8, 8))
 plt.style.use("dark_background")
 ax = plt.axes(xlim=(-(np.max(l1)+np.max(l2) + 0.5), np.max(l1)+np.max(l2) + 0.5),\
               ylim=(-(np.max(l1)+np.max(l2) + 0.5), np.max(l1)+np.max(l2) + 0.5))
