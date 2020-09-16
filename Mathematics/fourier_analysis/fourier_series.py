@@ -52,11 +52,11 @@ def get_function_and_vectors(Cr, Cc, T, nrange):
 ######################################################################
 # First, load the dataset
 infile = "india.svg"
-outfile = "india1.mp4"
+outfile = "india.mp4"
 X , Y = parse_svg(f"input/{infile}")
 N = len(X)
 T = np.linspace(0.0, 1.0, N)
-nrange = 250
+nrange = 500
 ndraw  = 50    # this is the nrange to draw
 # Now calculate fourier coefficients
 Cr, Cc = fourier_coefficients(X, Y, T, nrange)
