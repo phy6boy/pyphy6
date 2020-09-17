@@ -100,61 +100,87 @@ class Arena:
         # gravity : add if you want it
         # self.particles.state[:, 3] -= self.particles.m * self.g * dt
 
+############################################################################################
+# start of execution
+# defining initial state
+np.random.seed(0)                          # seeding random
+state = -0.5 + np.random.random((50,4))    # particles with random position and velocity
+state[:,:2] *= 4.0                         # scaling initial velocity
 
-np.random.seed(0)
-state = -0.5 + np.random.random((50,4))
-state[:,:2] *= 3.9      # for a fair amount of initial velocity
-
+# defining particles and arena
 particles = Particles(state)
 boundary = [-2,2,-2,2]
 arena = Arena(particles, boundary)
-dt = 1./30
+dt = 0.025                                 # descrete time step 
 
 # Animation
 fig = plt.figure()
-fig.subplots_adjust(left=0,right=1,bottom=0,top=1)
-ax = fig.add_subplot(111,aspect='equal',autoscale_on=False,xlim=(-3.2,3.2),ylim=(-2.4,2.4))
+fig.subplots_adjust(left   = 0,
+                    right  = 1,
+                    bottom = 0,
+                    top    = 1)
+ax = fig.add_subplot(111, aspect='equal',
+                     autoscale_on=False,
+                     xlim=(-3.0, 3.0),
+                     ylim=(-3.0, 3.0))
+plt.axis("off")                      # turn axis off because we don't wanr that
+# plotting 
+N  = state.shape[0]                  # total number of particles
+# finding marker size
+dx = ax.get_xbound()
+dx = dx[1] - dx[0]
+fraction = fig.get_figwidth() / dx
+size = arena.particles.size
+ms = int(fig.dpi * 2 * size * fraction) #markersize
 
-#plotter of particles
-p, = ax.plot([], [],'bo',ms=6)
-N = state.shape[0]
-selected_p = np.random.randint(N)   # A random particle for highlight
-p_highlight, = ax.plot([], [],'ro',ms=6)
-highlight_path, = ax.plot([], [], "r-", lw=1)
-highlight_path_x = [state[selected_p, 0]]
-highlight_path_y = [state[selected_p, 1]]
+p, = ax.plot([], [], 'bo', ms=ms)       # Represents all particles                    
+selected_p       = np.random.randint(N)          # A random particle for highlight
+p_highlight,     = ax.plot([], [], 'ro', ms=ms)  # highlighted particle
+highlight_path,  = ax.plot([], [], "r-", lw=1)   # path of highlighted particle
+highlight_path_x = [state[selected_p, 0]]        # x coordinate of highlighted
+highlight_path_y = [state[selected_p, 1]]        # y coordinate of highlighted
 
-#drawing arena_edges
-rect = plt.Rectangle(arena.boundary[::2],arena.boundary[1]-arena.boundary[0],
-                     arena.boundary[3]-arena.boundary[2],
-                     ec='none',lw=2,fc='none')
+ms = int(fig.dpi * 2 * arena.particles.size *\
+         fig.get_figwidth()/np.diff(ax.get_xbound())[0]) #markersize
+
+#drawing rectangular box
+rect = plt.Rectangle(arena.boundary[::2],                    # bottom left corner
+                     arena.boundary[1] - arena.boundary[0],  # length (x axis)
+                     arena.boundary[3] - arena.boundary[2],  # width  (y axis)
+                     ec='k', lw=2, fc='none')
 ax.add_patch(rect)
 
 def init():
+    """
+    initialisation funtion for animation
+    """
     p.set_data([],[])
     p_highlight.set_data([], [])
     highlight_path.set_data([], [])
-    rect.set_edgecolor('none')
-    return p,rect, p_highlight, highlight_path
+
+    return p, p_highlight, highlight_path
 
 def animate(i):
-    arena.proceed(dt)
-    highlight_path_x.append(arena.particles.state[selected_p, 0])
+    """
+    animation routine for matplotlib.animation
+    """
+    arena.proceed(dt)                                              # proceed to next step
+    highlight_path_x.append(arena.particles.state[selected_p, 0])  # add path of highlighted
     highlight_path_y.append(arena.particles.state[selected_p, 1])
 
-    ms = int(fig.dpi*2* arena.particles.size*fig.get_figwidth()/np.diff(ax.get_xbound())[0]) #markersize
-
-    rect.set_edgecolor('k')
-    p.set_data(arena.particles.state[:,0],arena.particles.state[:,1])
+    # updating plot
+    p.set_data(arena.particles.state[:,0],
+               arena.particles.state[:,1])
     p_highlight.set_data(arena.particles.state[selected_p,0],
-               arena.particles.state[selected_p,1])
+                         arena.particles.state[selected_p,1])
     highlight_path.set_data(highlight_path_x, highlight_path_y)
-    p.set_markersize(ms)
-    p_highlight.set_markersize(ms)
-    return p,rect, p_highlight, highlight_path
 
-ani = animation.FuncAnimation(fig,animate,frames=1000,interval=10,blit=True,init_func=init)
+    return p, p_highlight, highlight_path
 
-ani.save('output/brownian_motion.mp4',fps=100)
-
+ani = animation.FuncAnimation(fig, animate,
+                              frames=2000,
+                              interval=10,
+                              blit=True,
+                              init_func=init)
+ani.save('output/brownian_motion.mp4', fps=100)
 # plt.show()
