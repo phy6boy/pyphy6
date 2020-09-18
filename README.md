@@ -1,3 +1,3 @@
 # pyphy6
-A collection of simple python programs
-that can be used for physics education
+Python programs attempted to solve and simulate some 
+physics related problems. It's my hobby project.

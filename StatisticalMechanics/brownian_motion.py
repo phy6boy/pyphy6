@@ -121,24 +121,25 @@ fig.subplots_adjust(left   = 0,
                     top    = 1)
 ax = fig.add_subplot(111, aspect='equal',
                      autoscale_on=False,
-                     xlim=(-3.0, 3.0),
-                     ylim=(-3.0, 3.0))
-plt.axis("off")                      # turn axis off because we don't wanr that
+                     xlim=(-2.5, 2.5),
+                     ylim=(-2.5, 2.5))
+plt.axis("off")                         # turn axis off because we don't wanr that
 # plotting 
-N  = state.shape[0]                  # total number of particles
+N  = state.shape[0]                     # total number of particles
 # finding marker size
 dx = ax.get_xbound()
 dx = dx[1] - dx[0]
 fraction = fig.get_figwidth() / dx
 size = arena.particles.size
-ms = int(fig.dpi * 2 * size * fraction) #markersize
+ms = int(fig.dpi * 2 * size * fraction) # markersize
+ms = ms - 2                             # offset
 
-p, = ax.plot([], [], 'bo', ms=ms)       # Represents all particles                    
-selected_p       = np.random.randint(N)          # A random particle for highlight
-p_highlight,     = ax.plot([], [], 'ro', ms=ms)  # highlighted particle
-highlight_path,  = ax.plot([], [], "r-", lw=1)   # path of highlighted particle
-highlight_path_x = [state[selected_p, 0]]        # x coordinate of highlighted
-highlight_path_y = [state[selected_p, 1]]        # y coordinate of highlighted
+p, = ax.plot([], [], 'o', c="#2E30FF", ms=ms)                # Represents all particles                    
+selected_p       = np.random.randint(N)                      # A random particle for highlight
+p_highlight,     = ax.plot([], [], 'o', c="#FF4C4F", ms=ms)  # highlighted particle
+highlight_path,  = ax.plot([], [], "-", c="#FF4C4F", lw=1)   # path of highlighted particle
+highlight_path_x = [state[selected_p, 0]]                    # x coordinate of highlighted
+highlight_path_y = [state[selected_p, 1]]                    # y coordinate of highlighted
 
 ms = int(fig.dpi * 2 * arena.particles.size *\
          fig.get_figwidth()/np.diff(ax.get_xbound())[0]) #markersize
