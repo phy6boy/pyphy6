@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation
 from scipy.spatial.distance import pdist, squareform
+# np.random.seed(112)
 
 class Particles:
     """
@@ -9,7 +10,7 @@ class Particles:
     mass
     """
     
-    def __init__(self, state, size=0.05, m=0.03, e=1.0):
+    def __init__(self, state, highlight, size=0.02, m=0.03, e=1.0):
         """
         state : 2d array : (m n)
             each row 'm' contains particles
@@ -22,6 +23,7 @@ class Particles:
         self.state = np.array(state)
         self.size  = size
         self.m     = m*np.ones(self.state.shape[0])
+        self.m[highlight] = m*10
         self.e     = e
 
 class Arena:
@@ -97,18 +99,18 @@ class Arena:
         self.particles.state[x_left | x_right, 2] *= -self.particles.e
         self.particles.state[y_bottom | y_top, 3] *= -self.particles.e
 
-        # gravity : add if you want it
-        # self.particles.state[:, 3] -= self.particles.m * self.g * dt
 
 ############################################################################################
 # start of execution
 # defining initial state
 np.random.seed(0)                          # seeding random
-state = -0.5 + np.random.random((50,4))    # particles with random position and velocity
+state = -0.5 + np.random.random((1000,4))    # particles with random position and velocity
 state[:,:2] *= 4.0                         # scaling initial velocity
 
 # defining particles and arena
-particles = Particles(state)
+N  = state.shape[0]                         # total number of particles
+selected_p       = np.random.randint(N)     # A random particle for highlight
+particles = Particles(state, selected_p)
 boundary = [-2,2,-2,2]
 arena = Arena(particles, boundary)
 dt = 0.025                                 # descrete time step 
@@ -125,7 +127,7 @@ ax = fig.add_subplot(111, aspect='equal',
                      ylim=(-2.5, 2.5))
 plt.axis("off")                         # turn axis off because we don't wanr that
 # plotting 
-N  = state.shape[0]                     # total number of particles
+
 # finding marker size
 dx = ax.get_xbound()
 dx = dx[1] - dx[0]
@@ -135,8 +137,7 @@ ms = int(fig.dpi * 2 * size * fraction) # markersize
 ms = ms - 2                             # offset
 
 p, = ax.plot([], [], 'o', c="#2E30FF", ms=ms)                # Represents all particles                    
-selected_p       = np.random.randint(N)                      # A random particle for highlight
-p_highlight,     = ax.plot([], [], 'o', c="#FF4C4F", ms=ms)  # highlighted particle
+p_highlight,     = ax.plot([], [], 'o', c="#FF4C4F", ms=10)  # highlighted particle
 highlight_path,  = ax.plot([], [], "-", c="#FF4C4F", lw=1)   # path of highlighted particle
 highlight_path_x = [state[selected_p, 0]]                    # x coordinate of highlighted
 highlight_path_y = [state[selected_p, 1]]                    # y coordinate of highlighted
@@ -183,5 +184,5 @@ ani = animation.FuncAnimation(fig, animate,
                               interval=10,
                               blit=True,
                               init_func=init)
-ani.save('output/brownian_motion.mp4', fps=100)
-# plt.show()
+# ani.save('output/brownian_motion.mp4', fps=100)
+plt.show()
